@@ -84,31 +84,33 @@ public class Mediator {
     public void calculator(ArrayList<Hero> heroes, String synergy){
         //рекурсивная функция перестановок
         System.out.println("Start calculator... ");
-        perestanovki(new ArrayList<Hero>(),0, synergies.get(synergy).getHeroes());
+        ArrayList<ArrayList<Hero>> per = new ArrayList<ArrayList<Hero>>();
+        perestanovki(new ArrayList<Hero>(),0, synergies.get(synergy).getHeroes(), per);
+        for (ArrayList<Hero> alliance : per){
+            printHeroes(alliance);
+        }
         //вызов функции в цикле
 
     }
 
-    private void perestanovki(ArrayList<Hero> allianse, int heroIndex, ArrayList<Hero> heroes){
-        //printHeroes(allianse);
-
-        if (allianse.size() == 6 ) {
-            printHeroes(allianse);
-            return;
-        }
-        if( heroIndex >= heroes.size()){
-            return;
-        }
-
-        Hero hero = heroes.get(heroIndex);
-        //не добавляю
-        perestanovki(allianse, heroIndex+1, heroes);
-        ArrayList<Hero> allianse2 = new ArrayList<Hero>(allianse);
-        allianse2.add(hero);
-        // добавляю итого героя
-        perestanovki(allianse2,heroIndex+1, heroes);
-
+//     =
+private void perestanovki(ArrayList<Hero> allianse, int heroIndex, ArrayList<Hero> heroes, ArrayList<ArrayList<Hero>> per) {
+    if (allianse.size() == 6) {
+        per.add(allianse);
+        return;
     }
+    if (heroIndex >= heroes.size()) {
+        return;
+    }
+
+    Hero hero = heroes.get(heroIndex);
+    //не добавляю
+    perestanovki(allianse, heroIndex + 1, heroes, per);
+    ArrayList<Hero> allianse2 = new ArrayList<Hero>(allianse);
+    allianse2.add(hero);
+    // добавляю итого героя
+    perestanovki(allianse2, heroIndex + 1, heroes, per);
+}
 
 /*    private ArrayList<Hero> calculator_(ArrayList<Hero> heroes, String synergy, ArrayList<String> fullSynergies){
         if(heroes.size()==10) {
