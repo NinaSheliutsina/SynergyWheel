@@ -1,0 +1,61 @@
+name,class1,class2,class3,tier
+Anti-Mage,Elusive,DemonHunter,,ONE
+Axe,Brawny,Warrior,,ONE
+Batrider,Troll,Knight,,ONE
+Bloodseeker,Human,Deadeye,Assassin,ONE
+Bounty Hunter,Scrappy,Assassin,,ONE
+Drow Ranger,Heartless,Hunter,,ONE
+Enchantress,Savage,Druid,,ONE
+Ogre Magi,Blood-bound,Mage,,ONE
+Razor,Primordial,Mage,,ONE
+Shadow Shaman,Troll,Shaman,,ONE
+Tiny,Primordial,Warrior,,ONE
+Tusk,Savage,Warrior,,ONE
+Venomancer,Savage,Warlocks,,ONE
+Warlock,Blood-bound,Warlocks,,ONE
+Beastmaster,Brawny,Hunter,,TWO
+Chaos Knight,Demon,Knight,,TWO
+Lina,Human,Mage,,TWO
+Luna,Elusive,Knight,,TWO
+Morphling,Primordial,Assassin,,TWO
+Nature's Prophet,Elusive,Druid,,TWO
+Puck,Elusive,Dragon,Mage,TWO
+Pudge,Heartless,Warrior,,TWO
+Queen of Pain,Demon,Assassin,,TWO
+Slardar,Scaled,Warrior,,TWO
+Timbersaw,Scrappy,Inventor,,TWO
+Witch Doctor,Troll,Warlocks,,TWO
+Windranger,Elusive,Hunter,,TWO
+Abaddon,Heartless,Knight,,THREE
+Clockwerk,Scrappy,Inventor,,THREE
+Crystal Maiden,Human,Mage,,THREE
+Juggernaut,Brawny,Warrior,,THREE
+Lycan,Human,Hunter,Savage,THREE
+Omniknight,Human,Knight,,THREE
+Phantom Assassin,Elusive,Assassin,,THREE
+Shadow Fiend,Demon,Warlocks,,THREE
+Slark,Scaled,Assassin,,THREE
+Sniper,Scrappy,Deadeye,Hunter,THREE
+Terrorblade,Demon,DemonHunter,,THREE
+Tinker,Scrappy,Inventor,,THREE
+Treant Protector,Elusive,Druid,,THREE
+Viper,Dragon,Assassin,,THREE
+Alchemist,Scrappy,Warlocks,,FOUR
+Arc Warden,Primordial,Shaman,,FOUR
+Doom,Demon,Warrior,,FOUR
+Dragon Knight,Human,Dragon,Knight,FOUR
+Keeper of the Light,Human,Mage,,FOUR
+Kunkka,Human,Warrior,,FOUR
+Lone Druid,Savage,Druid,,FOUR
+Mirana,Elusive,Hunter,,FOUR
+Necrophos,Heartless,Warlocks,,FOUR
+Sand King,Savage,Assassin,,FOUR
+Templar Assassin,Elusive,Assassin,,FOUR
+Tidehunter,Scaled,Warrior,,FOUR
+Disruptor,Brawny,Warlocks,,ACE
+Enigma,Primordial,Shaman,,ACE
+Gyrocopter,Deadeye,Inventor,,ACE
+Lich,Heartless,Mage,,ACE
+Medusa,Scaled,Hunter,,ACE
+Techies,Scrappy,Inventor,,ACE
+Troll Warlord,Troll,Warrior,,ACE
