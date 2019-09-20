@@ -3,20 +3,19 @@ package org.underlords;
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVRecord;
 
-import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.Reader;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
+import org.apache.log4j.Logger;
 
 public class Mediator {
     private ArrayList<Hero> heroes = new ArrayList<>();
     private Map<String, Synergy> synergies = new HashMap<>();
-    private Map<String, List<Integer>> allianceBonus = new HashMap<>();
-
+    private Map<String, ArrayList<Integer>> allianceBonus = new HashMap<>();
+    private static Logger log = Logger.getLogger(Mediator.class.getName());
 
     //попросить саню преедлать csv
     public void readHeroesFile() throws IOException {
@@ -85,58 +84,100 @@ public class Mediator {
         //рекурсивная функция перестановок
         System.out.println("Start calculator... ");
         ArrayList<ArrayList<Hero>> per = new ArrayList<ArrayList<Hero>>();
-        perestanovki(new ArrayList<Hero>(),0, synergies.get(synergy).getHeroes(), per);
+        perestanovki(new ArrayList<Hero>(),0, synergies.get(synergy).getHeroes(), per,6);
         for (ArrayList<Hero> alliance : per){
-            printHeroes(alliance);
+//            printHeroes(alliance);
+            ArrayList<String> fullSynergies = new ArrayList<>();
+            fullSynergies.add(synergy);
+            calculator_(alliance, fullSynergies);
         }
-        //вызов функции в цикле
 
     }
 
-//     =
-private void perestanovki(ArrayList<Hero> allianse, int heroIndex, ArrayList<Hero> heroes, ArrayList<ArrayList<Hero>> per) {
-    if (allianse.size() == 6) {
-        per.add(allianse);
-        return;
-    }
-    if (heroIndex >= heroes.size()) {
-        return;
+    private void perestanovki(ArrayList<Hero> allianse, int heroIndex, ArrayList<Hero> heroes, ArrayList<ArrayList<Hero>> per, int allianseSize) {
+        if (allianse.size() == allianseSize) {
+            per.add(allianse);
+            return;
+        }
+        if (heroIndex >= heroes.size()) {
+            return;
+        }
+        Hero hero = heroes.get(heroIndex);
+
+        //проверка для того, чтобы не было дубликатов
+        if (!allianse.contains(hero)) {
+            //не добавляю
+            perestanovki(allianse, heroIndex + 1, heroes, per, allianseSize);
+            ArrayList<Hero> allianse2 = new ArrayList<Hero>(allianse);
+            allianse2.add(hero);
+            // добавляю итого героя
+            perestanovki(allianse2, heroIndex + 1, heroes, per, allianseSize);
+        } else {
+            perestanovki(allianse, heroIndex + 1, heroes, per, allianseSize);
+        }
     }
 
-    Hero hero = heroes.get(heroIndex);
-    //не добавляю
-    perestanovki(allianse, heroIndex + 1, heroes, per);
-    ArrayList<Hero> allianse2 = new ArrayList<Hero>(allianse);
-    allianse2.add(hero);
-    // добавляю итого героя
-    perestanovki(allianse2, heroIndex + 1, heroes, per);
-}
-
-/*    private ArrayList<Hero> calculator_(ArrayList<Hero> heroes, String synergy, ArrayList<String> fullSynergies){
-        if(heroes.size()==10) {
+    private final int fullSize = 8;
+    private void calculator_(ArrayList<Hero> heroes, ArrayList<String> fullSynergies) {
+        if (heroes.size() == fullSize) {
+            log.info(getHeroesString(heroes));
             printHeroes(heroes);
-            return heroes;
         }
 
-        ArrayList<String> alliances = calcAlliances(heroes, fullSynergies);
-        for()
-
-
-
-
-        return list;
-    }*/
-
-    private ArrayList<String> calcAlliances(ArrayList<Hero> heroes, ArrayList<String> fullSynergies){
-        ArrayList<String> alliances = new ArrayList<>();
-        for(Hero hero: heroes){
-            ArrayList<String> syn = hero.getSynergies();
-            for(String s: syn){
-                if(!alliances.contains(s))
-                    alliances.add(s);
+        HashMap<String, Integer> alliances = calcAlliances(heroes, fullSynergies);
+        for (String syn : alliances.keySet()) {
+            int num = alliances.get(syn);
+            ArrayList<Integer> bonus = allianceBonus.get(syn);
+            boolean isFull = true;
+            boolean isAddFullSyn = false;
+            for (Integer i : bonus) {
+                if (i > num) {
+                    isFull = false;
+                    if (num == bonus.get(bonus.size() - 1))
+                        isAddFullSyn = true;
+                    num = i - num;
+                    break;
+                }
+                //num - число героев, которых надо добавить до синергии
+            }
+            if(isFull) continue;
+            ArrayList<ArrayList<Hero>> per = new ArrayList<ArrayList<Hero>>();
+            perestanovki(heroes, 0, synergies.get(syn).getHeroes(), per, heroes.size() + num);
+            for (ArrayList<Hero> alliance : per) {
+                if (heroes.size() > fullSize) continue;
+                if(isAddFullSyn)
+                fullSynergies.add(syn);
+                calculator_(alliance, fullSynergies);
             }
         }
-        return alliances;
+    }
+
+    private HashMap<String, Integer> calcAlliances(ArrayList<Hero> heroes, ArrayList<String> fullSynergies) {
+        Map<String, Integer> alliances = new HashMap<>();
+        Map<String, Integer> alliancesMax = new HashMap<>();
+        int maxNum = 0;
+        for (Hero hero : heroes) {
+            ArrayList<String> syn = hero.getSynergies();
+            for (String s : syn) {
+                if (!fullSynergies.contains(s)) {
+                    int num = 1;
+                    if (!alliances.containsKey(s)) {
+                        alliances.put(s, num);
+                    } else {
+                        num += alliances.get(s);
+                        alliances.put(s,  num);
+                    }
+                    if (num >= maxNum) {
+                        if(num > maxNum)
+                        alliancesMax = new HashMap<>();
+                        alliancesMax.put(s, num);
+                        maxNum = num;
+                    }
+
+                }
+            }
+        }
+        return (HashMap<String, Integer>) alliancesMax;
     }
 
     private void printHeroes(ArrayList<Hero> heroes){
@@ -144,6 +185,15 @@ private void perestanovki(ArrayList<Hero> allianse, int heroIndex, ArrayList<Her
         for (Hero hero: heroes) {
             hero.print();
         }
+    }
+
+    private String getHeroesString(ArrayList<Hero> heroes){
+        StringBuffer sb = new StringBuffer("NEW HERO ALLIANCE");
+        for (Hero hero: heroes) {
+            sb.append(hero.toString());
+        }
+        sb.append("\n");
+        return sb.toString() ;
     }
 
 
