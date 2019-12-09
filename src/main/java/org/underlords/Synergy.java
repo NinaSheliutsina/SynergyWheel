@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Synergy {
+    // todo добавить возможность альянсов
     private String name;
     private String num;
     private ArrayList<Hero> heroes = new ArrayList<>();
