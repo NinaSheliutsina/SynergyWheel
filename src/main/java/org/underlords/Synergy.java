@@ -5,7 +5,6 @@ import java.util.List;
 
 public class Synergy {
     private String name;
-    private String num;
     private ArrayList<Hero> heroes = new ArrayList<>();
 
     public String getName() {
